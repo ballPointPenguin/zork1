@@ -128,5 +128,28 @@
 (zork::examine-obj "CASE")
 (format t "X CASE passed.~%")
 
+;; Test verb synonyms
+;; Move to a room with objects
+(setf zork::*player-location* zork::living-room)
+
+;; Test GET synonym for TAKE
+(zork::parser "GET LAMP")
+(assert (eq (zork::zil-object-location zork::lamp) zork::*player*))
+(format t "GET (synonym for TAKE) passed.~%")
+
+;; Drop it for next test
+(zork::parser "DROP LAMP")
+
+;; Test L synonym for LOOK
+(let ((output (with-output-to-string (*standard-output*)
+                (zork::parser "L"))))
+  (assert (search "Living Room" output))
+  (format t "L (synonym for LOOK) passed.~%"))
+
+;; Test GRAB synonym for TAKE
+(zork::parser "GRAB SWORD")
+(assert (eq (zork::zil-object-location zork::sword) zork::*player*))
+(format t "GRAB (synonym for TAKE) passed.~%")
+
 (format t "All tests passed!~%")
 (uiop:quit 0)

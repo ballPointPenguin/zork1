@@ -71,10 +71,19 @@
 
 (defvar *player-location* nil "Current location of the player.")
 
+(defun normalize-verb (verb)
+  "Normalize verb synonyms to canonical forms."
+  (cond
+    ((string= verb "GET") "TAKE")
+    ((string= verb "L") "LOOK")
+    ((string= verb "GRAB") "TAKE")
+    ((string= verb "PICK") "TAKE")
+    (t verb)))
+
 (defun parser (input)
   "Simple parser stub."
   (let* ((words (uiop:split-string (string-upcase input)))
-         (verb (first words))
+         (verb (normalize-verb (first words)))
          (noun (second words))
          (prep (third words))
          (indirect (fourth words)))
