@@ -23,6 +23,9 @@
         (synonyms nil)
         (adjectives nil)
         (action nil)
+        (text nil)
+        (ldesc nil)
+        (fdesc nil)
         (props nil))
     (dolist (clause clauses)
       (case (first clause)
@@ -35,6 +38,9 @@
         (synonym (setf synonyms (rest clause)))
         (adjective (setf adjectives (rest clause)))
         (action (setf action (second clause)))
+        (text (setf text (second clause)))
+        (ldesc (setf ldesc (second clause)))
+        (fdesc (setf fdesc (second clause)))
         (t (push clause props)))) ; Store other properties
     
     `(progn
@@ -45,7 +51,10 @@
                         :flags ',flags
                         :synonyms ',synonyms
                         :adjectives ',adjectives
-                        :action ',action))
+                        :action ',action
+                        :text ,text
+                        :ldesc ,ldesc
+                        :fdesc ,fdesc))
        (add-obj ',name ,name)
        ;; Handle location if specified
        ,(when location

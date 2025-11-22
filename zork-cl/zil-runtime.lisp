@@ -14,6 +14,9 @@
    (location :initarg :location :accessor zil-object-location :initform nil)
    (contents :initarg :contents :accessor zil-object-contents :initform nil)
    (action :initarg :action :accessor zil-object-action :initform nil)
+   (text :initarg :text :accessor zil-object-text :initform nil)
+   (ldesc :initarg :ldesc :accessor zil-object-ldesc :initform nil)
+   (fdesc :initarg :fdesc :accessor zil-object-fdesc :initform nil)
    (properties :initarg :properties :accessor zil-object-properties :initform (make-hash-table :test 'eq))))
 
 (defmethod print-object ((obj zil-object) stream)
@@ -106,6 +109,14 @@
        (if noun
            (close-obj noun)
            (format t "Close what?~%")))
+      ((string= verb "READ")
+       (if noun
+           (read-obj noun)
+           (format t "Read what?~%")))
+      ((or (string= verb "EXAMINE") (string= verb "X"))
+       (if noun
+           (examine-obj noun)
+           (format t "Examine what?~%")))
       ((string= verb "QUIT")
        (return-from parser :quit))
       (t (format t "I don't know the word ~A.~%" verb)))))
@@ -205,6 +216,30 @@
       (t
        (move obj *player-location*)
        (format t "Dropped.~%")))))
+
+(defun read-obj (name)
+  (let ((obj (resolve-obj name)))
+    (cond
+      ((null obj)
+       (format t "You don't see that here.~%"))
+      ((not (fset? obj 'readbit))
+       (format t "You can't read that.~%"))
+      ((zil-object-text obj)
+       (format t "~A~%" (zil-object-text obj)))
+      (t
+       (format t "There is nothing written on the ~A.~%" (zil-object-desc obj))))))
+
+(defun examine-obj (name)
+  (let ((obj (resolve-obj name)))
+    (cond
+      ((null obj)
+       (format t "You don't see that here.~%"))
+      ((zil-object-ldesc obj)
+       (format t "~A~%" (zil-object-ldesc obj)))
+      ((zil-object-desc obj)
+       (format t "It's a ~A.~%" (zil-object-desc obj)))
+      (t
+       (format t "There's nothing special about it.~%")))))
 
 (defun show-inventory ()
   (let ((inv (zil-object-contents *player*)))

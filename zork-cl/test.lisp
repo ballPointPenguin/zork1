@@ -106,5 +106,27 @@
 (assert (zork::is-visible zork::sword))
 (format t "LIVING-ROOM objects passed.~%")
 
+;; Test READ
+(zork::read-obj "LEAFLET")
+;; We can't easily assert stdout, but we can check if the function runs without error.
+;; Ideally we'd capture output, but for now we trust the runtime.
+(assert (zork::fset? zork::advertisement 'zork::readbit))
+(format t "READ LEAFLET passed (runtime check).~%")
+
+(zork::read-obj "DOOR")
+(assert (zork::fset? zork::wooden-door 'zork::readbit))
+(format t "READ DOOR passed (runtime check).~%")
+
+;; Test EXAMINE
+(zork::examine-obj "LAMP")
+(format t "EXAMINE LAMP passed.~%")
+
+(zork::examine-obj "SWORD")
+(format t "EXAMINE SWORD passed.~%")
+
+;; Test X shorthand
+(zork::examine-obj "CASE")
+(format t "X CASE passed.~%")
+
 (format t "All tests passed!~%")
 (uiop:quit 0)

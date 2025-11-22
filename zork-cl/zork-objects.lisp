@@ -51,7 +51,10 @@
   (synonym advertisement leaflet booklet mail)
   (adjective small)
   (desc "leaflet")
-  (flags readbit takebit burnbit))
+  (flags readbit takebit burnbit)
+  (text "WELCOME TO ZORK!
+
+    ZORK is a game of adventure, danger, and low cunning. In it you will explore some of the most amazing territory ever seen by mortals. No computer should be without one!"))
 
 ;;; Dummy routines for actions
 (routine west-house ()
@@ -168,6 +171,15 @@
   (flags rlandbit onbit sacredbit)
   (global stairs))
 
+(object wooden-door
+  (in living-room)
+  (synonym door lettering writing)
+  (adjective wooden gothic strange west)
+  (desc "wooden door")
+  (flags readbit doorbit ndescbit transbit)
+  (action front-door-fcn)
+  (text "The engravings translate to \"This space intentionally left blank.\""))
+
 (object trophy-case
   (in living-room)
   (synonym case)
@@ -195,6 +207,7 @@
   (synonym sword orcrist glamdring blade)
   (adjective elvish old antique)
   (desc "sword")
+  (ldesc "There is an elvish sword here.")
   (flags takebit weaponbit trytakebit))
 
 (object lamp
@@ -203,6 +216,7 @@
   (adjective brass)
   (desc "brass lantern")
   (flags takebit lightbit)
+  (ldesc "There is a brass lantern (battery-powered) here.")
   (action lantern))
 
 (object chimney
@@ -222,6 +236,7 @@
 (routine east-house () (tell "You are behind the white house.~%"))
 (routine kitchen-fcn () (tell "You are in the kitchen.~%"))
 (routine living-room-fcn () (tell "You are in the living room.~%"))
+(routine front-door-fcn () (tell "The door is nailed shut.~%"))
 (routine trophy-case-fcn () (tell "It's a trophy case.~%"))
 (routine lantern () (tell "It's a lamp.~%"))
 
